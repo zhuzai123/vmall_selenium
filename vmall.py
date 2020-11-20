@@ -7,7 +7,7 @@ class Vmall():
         # 默认链接
         self.driver_path = 'C:\Program Files (x86)\Google\Chrome\Application\chromedriver.exe'
         self.url = 'https://www.vmall.com/product/10086726905036.html'
-        self.product_choose = '#pro-skus > dl.product-choose.clearfix.product-choosepic > div > ul > li.attr4.attr19.attr34'
+        self.product_choose = '#pro-skus > dl.product-choose.clearfix.product-choosepic > div > ul > li.attr13.attr28.attr43'
         self.product_purchase = '#pro-operation > a:nth-child(2)'
 
     def addLogin(self,name):
@@ -68,7 +68,7 @@ class Vmall():
                 break
             time.sleep(0.1)
         # 没买到过 后续判断等一个有缘人来写
-        input(f'账号:{name} 点击成功!是否抢到请自己看!')
+        input(f'账号:{name} 点击成功!是否抢到请自己看!\n')
         driver.close()
 
 if __name__ == '__main__':
