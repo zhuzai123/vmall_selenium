@@ -350,4 +350,4 @@ MigrationBackup/
 .ionide/
 
 # Cookies
-# cookies/*
+/cookies/*
