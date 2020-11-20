@@ -81,11 +81,12 @@ if __name__ == '__main__':
             hw.addLogin(name)
         elif key=='2':
             t=[]
-            for item in os.listdir(path='.cookies'):
+            for item in os.listdir(path='.cookies', ):
                 # 多线程
-                t.append(threading.Thread(target=hw.start,args=(item.split('.')[0],)))
-                t[-1].setDaemon(True)
-                t[-1].start()
+                if item.endswith('.json'):
+                    t.append(threading.Thread(target=hw.start,args=(item.split('.')[0],)))
+                    t[-1].setDaemon(True)
+                    t[-1].start()
             for item in t:
                 item.join()
             break
