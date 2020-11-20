@@ -20,7 +20,7 @@ class Vmall():
         jsonCookies = json.dumps(dictCookies)
         # 登录完成后将cookie保存到本地
         print('获取cookies成功!')
-        with open(f'.cookies/{name}.json', 'w') as f:
+        with open(f'cookies/{name}.json', 'w') as f:
             f.write(jsonCookies)
         driver.close()
 
@@ -34,7 +34,7 @@ class Vmall():
         # 删除第一次建立连接时的cookie
         driver.delete_all_cookies()
         # 读取登录时存储到本地的cookie
-        with open(f'.cookies/{name}.json', 'r', encoding='utf-8') as f:
+        with open(f'cookies/{name}.json', 'r', encoding='utf-8') as f:
             listCookies = json.loads(f.read())
         for cookie in listCookies:
             #driver.delete_cookie(cookie['name'])
@@ -81,7 +81,7 @@ if __name__ == '__main__':
             hw.addLogin(name)
         elif key=='2':
             t=[]
-            for item in os.listdir(path='.cookies', ):
+            for item in os.listdir(path='cookies', ):
                 # 多线程
                 if item.endswith('.json'):
                     t.append(threading.Thread(target=hw.start,args=(item.split('.')[0],)))
