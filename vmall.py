@@ -5,11 +5,14 @@ import time, json, os, threading
 class Vmall():
     def __init__(self):
         # 默认链接
+        self.driver_path = 'C:\Program Files (x86)\Google\Chrome\Application\chromedriver.exe'
         self.url = 'https://www.vmall.com/product/10086726905036.html'
+        self.product_choose = '#pro-skus > dl.product-choose.clearfix.product-choosepic > div > ul > li.attr4.attr19.attr34'
+        self.product_purchase = '#pro-operation > a:nth-child(2)'
 
     def addLogin(self,name):
         # 增加登录的cookies 登录账号
-        driver = webdriver.Chrome(executable_path ="C:\Program Files\Google\Chrome\Application\chromedriver.exe")
+        driver = webdriver.Chrome(executable_path=self.driver_path)
         driver.get(self.url)
         # 获取cookie并通过json模块将dict转化成str
         input(f'账号:{name} 请在网页登录,成功后回车:')
@@ -23,7 +26,7 @@ class Vmall():
 
     def start(self,name):
         # 创建浏览器
-        driver = webdriver.Chrome(executable_path ="C:\Program Files\Google\Chrome\Application\chromedriver.exe")
+        driver = webdriver.Chrome(executable_path=self.driver_path)
         # 超时
         driver.set_page_load_timeout(5000)
         # 访问一次,不然容易设置不了cookies
@@ -45,7 +48,7 @@ class Vmall():
             })
         driver.get(self.url)
         # 自动选规格尺寸 默认白色
-        self.selector = '#pro-skus > dl.product-choose.clearfix.product-choosepic > div > ul > li.attr4.attr19.attr34'
+        self.selector = self.product_choose
         print(f'账号:{name} 选规格尺寸....目标按钮:{driver.find_element_by_css_selector(self.selector).text}')
         try:
             elem = driver.find_element_by_css_selector(self.selector)
@@ -54,9 +57,7 @@ class Vmall():
             pass
         input(f'账号:{name} 选规格尺寸信息,并回车(可能会多次):\n')
 
-        #pro-operation > a:nth-child(2) # a的第二个
-        #pro-operation > a.product-button02.disabled # 等待抢购时的selector
-        self.selector = '#pro-operation > a:nth-child(2)'
+        self.selector = self.product_purchase
         print(f'账号:{name} 开始干活....目标按钮:{driver.find_element_by_css_selector(self.selector).text}')
         while True:
             #print('目标按钮:{driver.find_element_by_css_selector(self.selector).text}')
@@ -79,14 +80,11 @@ if __name__ == '__main__':
             name = input('输入本次登录帐号的备注(请勿重复):\n')
             hw.addLogin(name)
         elif key=='2':
-            #print('选规格尺寸信息,并回车')
             t=[]
             for item in os.listdir(path='cookies'):
-                # 创建线程
+                # 多线程
                 t.append(threading.Thread(target=hw.start,args=(item.split('.')[0],)))
-                # 设置主线程关闭时,它也跟着关闭
                 t[-1].setDaemon(True)
-                # 开始运行
                 t[-1].start()
             for item in t:
                 item.join()
